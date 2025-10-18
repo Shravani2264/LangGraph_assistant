@@ -17,7 +17,17 @@ def add_thread(thread_id):
         st.session_state['chat_threads'].append(thread_id)
 
 def load_conversation(thread_id):
-    messages = chatbot.get_state(config={'configurable': {'thread_id': thread_id}}).values.get('messages', [])
+    try:
+        state = chatbot.get_state(config={'configurable': {'thread_id': thread_id}})
+        messages = state.values.get('messages', []) if state.values else []
+        
+        # This was the critical fix:
+        if messages is None:
+            messages = []
+            
+        return messages
+    except Exception as e:
+        return [] 
     
 
 if 'message_history' not in st.session_state:
@@ -41,7 +51,7 @@ if st.sidebar.button("New Chat"):
     reset_chat()
 st.sidebar.header("My Conversations")
 
-for thread_id in st.session_state['chat_threads']:  
+for thread_id in st.session_state['chat_threads'][::-1]:  
     if st.sidebar.button(str(thread_id)):
         st.session_state['thread_id'] = thread_id
         messages = load_conversation(thread_id)
