@@ -1,7 +1,8 @@
-langchain 
+langchain
 langchain-core
 langchain-google-genai
 langgraph
 streamlit
 python-dotenv
 langgraph-checkpoint-sqlite
+sqlite-utils
