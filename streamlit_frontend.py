@@ -1,5 +1,5 @@
 import streamlit as st
-from langgraph_backend import chatbot
+from langgraph_backend import chatbot, retrieve_all_threads
 from langchain_core.messages import HumanMessage
 import uuid
 
@@ -29,7 +29,7 @@ def load_conversation(thread_id):
     except Exception as e:
         return [] 
     
-
+#session ska setup
 if 'message_history' not in st.session_state:
     st.session_state['message_history'] = []
 
@@ -37,7 +37,7 @@ if 'thread_id' not in st.session_state:
     st.session_state['thread_id'] = generate_thread_id()
 
 if 'chat_threads' not in st.session_state:
-    st.session_state['chat_threads'] = []
+    st.session_state['chat_threads'] = retrieve_all_threads()
 
 add_thread(st.session_state['thread_id'])
 
